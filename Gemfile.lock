@@ -29,16 +29,28 @@ GEM
       activesupport (= 3.0.3)
     activesupport (3.0.3)
     arel (2.0.6)
+    bson (1.1.5)
+    bson_ext (1.1.5)
     builder (2.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
+    jnunemaker-validatable (1.8.4)
+      activesupport (>= 2.3.4)
     mail (2.2.13)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    mongo (1.1.5)
+      bson (>= 1.1.5)
+    mongo_mapper (0.8.6)
+      activesupport (>= 2.3.4)
+      jnunemaker-validatable (~> 1.8.4)
+      plucky (~> 0.3.6)
+    plucky (0.3.6)
+      mongo (~> 1.1)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -70,5 +82,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext
+  mongo_mapper
   rails (= 3.0.3)
   rails3-generators
