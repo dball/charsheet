@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    ZenTest (4.4.2)
     abstract (1.0.0)
     actionmailer (3.0.3)
       actionpack (= 3.0.3)
@@ -73,6 +74,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    mocha (0.9.10)
+      rake
     mongo (1.1.5)
       bson (>= 1.1.5)
     mongo_mapper (0.8.6)
@@ -135,11 +138,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ZenTest
   bson_ext
   capybara
   cucumber
   cucumber-rails
   database_cleaner
+  mocha
   mongo_mapper
   nokogiri
   rails (= 3.0.3)

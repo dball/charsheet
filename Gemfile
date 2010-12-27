@@ -14,4 +14,6 @@ group :test, :spec, :cucumber do
   gem "cucumber"
   gem "database_cleaner"
   gem "cucumber-rails"
+  gem 'mocha'
+  gem 'ZenTest'
 end
