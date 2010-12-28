@@ -47,4 +47,13 @@ describe Character do
     character.str.should == 29
   end
 
+  it "should stack untyped equipment bonuses" do
+    character = Factory.build(:character, :base_str => 18)
+    character.equipment.build(
+      :str_bonus => 2, :worn => true, :bonus_type => 'enhancement')
+    character.equipment.build(:str_bonus => 3, :worn => true)
+    character.equipment.build(:str_bonus => 5, :worn => true)
+    character.str.should == 28
+  end
+
 end
