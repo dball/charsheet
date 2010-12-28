@@ -16,4 +16,5 @@ group :test, :spec, :cucumber do
   gem "cucumber-rails"
   gem 'mocha'
   gem 'ZenTest'
+  gem 'factory_girl', :git => 'https://github.com/thoughtbot/factory_girl.git'
 end

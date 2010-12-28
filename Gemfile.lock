@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/thoughtbot/factory_girl.git
+  revision: df8cdbf8142143026a7f9b8c47b64ae0bb5e84fb
+  specs:
+    factory_girl (2.0.0.beta1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -144,6 +150,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   database_cleaner
+  factory_girl!
   mocha
   mongo_mapper
   nokogiri
