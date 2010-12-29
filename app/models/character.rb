@@ -33,7 +33,20 @@ class Character
   end
 
   Skill.all.each do |name, skill|
-    attr_accessor "#{name}_ranks".to_sym
+    key "#{name}_ranks".to_sym, :default => 0
+    define_method "#{name}_modifier".to_sym do
+      skill = Skill.send(name)
+      value = send("#{name}_ranks") + send("#{skill.ability}_modifier")
+      Skill.all.each_pair do |oname, oskill|
+        if send("#{oname}_ranks") >= 5
+          if oskill.synergies.has_key?(name)
+            condition = oskill.synergies[name]
+            value += 2 unless condition
+          end
+        end
+      end
+      value
+    end
   end
 
   has_many :equipment

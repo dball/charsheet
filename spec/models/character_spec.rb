@@ -93,6 +93,27 @@ describe Character do
       end
     end
 
+    it "should compute skill modifiers from abilities and ranks" do
+      character = Factory(:character, :base_cha => 16, :bluff_ranks => 5)
+      character.bluff_modifier.should == 8
+    end
+
+    it "should add skill synergies to skill modifiers" do
+      character = Factory(:character, :base_cha => 16,
+        :bluff_ranks => 5, :diplomacy_ranks => 1)
+      character.diplomacy_modifier.should == 6
+    end
+
+    it "should add conditional skill synergies to skill modifiers" do
+      character = Factory(:character, :base_cha => 16,
+        :bluff_ranks => 5, :disguise_ranks => 1)
+      character.disguise_modifier.should == 4
+      pending
+      character.disguise_modifier.conditions.should ==
+        { 'to act in character' => '+2' }
+      character.diplomacy_modifiers.conditions.should == {}
+    end
+
   end
 
 end

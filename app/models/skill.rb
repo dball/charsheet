@@ -13,13 +13,20 @@ class Skill
     skill
   end
 
-  attr_reader :ability, :trained
+  attr_reader :ability, :trained, :synergies
   alias :trained? :trained
 
   def initialize(ability, trained, *synergies)
     @ability = ability
     @trained = trained
-    @synergies = synergies
+    @synergies = {}
+    synergies.each do |value|
+      if value.is_a?(Hash)
+        @synergies.merge!(value)
+      else
+        @synergies[value] = nil
+      end
+    end
   end
 
   register(:bluff, :cha, false, :diplomacy, :disguise => 'to act in character')
