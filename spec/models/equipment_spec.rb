@@ -37,12 +37,25 @@ describe Equipment do
     end
   end
 
+  it "should have ac bonus" do
+    @equipment.ac_bonus = 8
+    @equipment.ac_bonus.should == 8
+  end
+
   it "should have a worn scope" do
     character = Factory(:character)
     equipment = [true, false].map do |worn|
       Factory(:equipment, :worn => worn, :character => character)
     end
     Equipment.worn.all.should == [equipment.first]
+  end
+
+  it "should have an armor scope" do
+    character = Factory(:character)
+    equipment = [nil, 0, 8].map do |bonus|
+      Factory(:equipment, :ac_bonus => bonus, :character => character)
+    end
+    Equipment.armor.all.should == [equipment.last]
   end
 
 end

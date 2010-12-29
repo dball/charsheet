@@ -14,8 +14,7 @@ class Character
       value = send("base_#{ability}")
       return unless value
       bonus_types = Set.new
-      worn = equipment.select(&:worn?)
-      worn.group_by(&:bonus_type).each do |bonus_type, items|
+      equipment.worn.group_by(&:bonus_type).each do |bonus_type, items|
         bonuses = items.map { |item| item.send("#{ability}_bonus") }.compact
         unless bonuses.empty?
           if bonus_type.present?
@@ -36,7 +35,15 @@ class Character
   has_many :equipment
 
   def armor_class
-    10
+    value = 10 + dex_modifier
+    equipment.worn.armor.group_by(&:bonus_type).each do |bonus_type, items|
+      if bonus_type.present?
+        value += items.map(&:ac_bonus).sort.last
+      else
+        value = items.inject(value) { |sum, item| sum + item.ac_bonus }
+      end
+    end
+    value
   end
 
 end
