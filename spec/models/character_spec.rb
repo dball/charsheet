@@ -83,4 +83,16 @@ describe Character do
     character.str.should == 28
   end
 
+  describe "skills" do
+
+    it "should accept ranks in all of the core skills" do
+      character = Factory(:character)
+      Skill.all.keys.each do |skill|
+        character.send("#{skill}_ranks=", 4)
+        character.send("#{skill}_ranks").should == 4
+      end
+    end
+
+  end
+
 end

@@ -32,6 +32,10 @@ class Character
     end
   end
 
+  Skill.all.each do |name, skill|
+    attr_accessor "#{name}_ranks".to_sym
+  end
+
   has_many :equipment
 
   def armor_class
