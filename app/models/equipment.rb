@@ -10,6 +10,8 @@ class Equipment
     key "#{ability}_bonus"
   end
 
+  scope :worn, where(:worn => true)
+
   belongs_to :character
 
 end

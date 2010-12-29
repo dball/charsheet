@@ -35,4 +35,8 @@ class Character
 
   has_many :equipment
 
+  def armor_class
+    10
+  end
+
 end

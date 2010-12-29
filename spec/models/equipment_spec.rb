@@ -37,4 +37,12 @@ describe Equipment do
     end
   end
 
+  it "should have a worn scope" do
+    character = Factory(:character)
+    equipment = [true, false].map do |worn|
+      Factory(:equipment, :worn => worn, :character => character)
+    end
+    Equipment.worn.all.should == [equipment.first]
+  end
+
 end

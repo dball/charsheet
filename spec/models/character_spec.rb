@@ -24,6 +24,11 @@ describe Character do
     end
   end
 
+  it "should have armor class" do
+    character = Factory.build(:character, :base_dex => 10)
+    character.armor_class.should == 10
+  end
+
   it "should apply worn equipment bonuses to ability scores" do
     character = Factory.build(:character, :base_str => 18)
     character.equipment.build(:str_bonus => 4, :worn => true)
