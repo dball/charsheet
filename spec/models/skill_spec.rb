@@ -2,7 +2,24 @@ require 'spec_helper'
 
 describe Skill do
 
-  skills = [:bluff, :diplomacy, :disguise]
+  skills = [:appraise,
+   :balance,
+   :bluff,
+   :climb,
+   :concentration,
+   :craft,
+   :decipher_script,
+   :diplomacy,
+   :disguise,
+   :escape_artist,
+   :forgery,
+   :gather_information,
+   :handle_animal,
+   :heal,
+   :hide,
+   :intimidate,
+   :jump,
+   :knowledge]
   
   it "should have the core skills" do
     skills.each do |name|
