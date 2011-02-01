@@ -1,7 +1,7 @@
 describe Equipment do
 
   before do
-    @equipment = Equipment.new
+    @equipment = Character.new.equipment.build
   end
 
   it "should have a name" do
@@ -25,21 +25,9 @@ describe Equipment do
     @equipment.should be_worn
   end
 
-  it "should have a bonus type" do
-    @equipment.bonus_type = 'morale'
-    @equipment.bonus_type.should == 'morale'
-  end
-
-  it "should have ability bonuses" do
-    Ability::ABILITIES.each do |ability|
-      @equipment.send("#{ability}_bonus=", 4)
-      @equipment.send("#{ability}_bonus").should == 4
-    end
-  end
-
-  it "should have ac bonus" do
-    @equipment.ac_bonus = 8
-    @equipment.ac_bonus.should == 8
+  it "should have effects" do
+    @equipment.effects.create(:ac => 8, :operator => '+')
+    @equipment.effects.map { |eq| [eq.ac, eq.operator] }.should == [[8, '+']]
   end
 
   it "should have a worn scope" do
@@ -52,8 +40,8 @@ describe Equipment do
 
   it "should have an armor scope" do
     character = Factory(:character)
-    equipment = [nil, 0, 8].map do |bonus|
-      Factory(:equipment, :ac_bonus => bonus, :character => character)
+    equipment = [false, true].map do |armor|
+      Factory(:equipment, :slot => armor ? 'armor' : 'neck', :character => character)
     end
     character.equipment.armor.all.should == [equipment.last]
   end

@@ -36,18 +36,17 @@ describe Character do
 
   it "should apply worn armor to armor class" do
     character = Factory(:character, :base_dex => 10)
-    character.equipment.create(:ac_bonus => 8, :worn => true, :name => 'foo')
+    character.equipment.create(:slot => 'armor', :worn => true, :name => 'foo').tap do |eq|
+      eq.effects.build(:ac => 8, :operator => '+')
+    end
     character.armor_class.should == 18
   end
 
   it "should not stack armor bonuses of the same type" do
     character = Factory(:character, :base_dex => 10)
-    character.equipment.create(
-      :ac_bonus => 4, :worn => true, :bonus_type => 'armor', :name => 'foo')
-    character.equipment.create(
-      :ac_bonus => 8, :worn => true, :bonus_type => 'armor', :name => 'bar')
-    character.equipment.create(
-      :ac_bonus => 1, :worn => true, :bonus_type => 'luck', :name => 'baz')
+    character.equipment.create(:slot => 'armor', :worn => true, :name => 'foo', :effects => [ { :ac => 4, :operator => '+', :type => 'armor' } ])
+    character.equipment.create(:slot => 'armor', :worn => true, :name => 'bar', :effects => [ { :ac => 8, :operator => '+', :type => 'armor' } ])
+    character.equipment.create(:slot => 'armor', :worn => true, :name => 'baz', :effects => [ { :ac => 1, :operator => '+', :type => 'luck' } ])
     character.armor_class.should == 19
   end
 

@@ -12,9 +12,8 @@ class Equipment
   Ability::ABILITIES.each do |ability|
     field "#{ability}_bonus"
   end
-  field :ac_bonus
 
   scope :worn, where(:worn => true)
-  scope :armor, where(:ac_bonus.gt => 0)
+  scope :armor, where(:slot => 'armor')
 
 end
