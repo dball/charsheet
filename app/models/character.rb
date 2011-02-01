@@ -2,6 +2,8 @@ class Character
   include Mongoid::Document         
 
   embeds_one :race
+  validates_presence_of :race
+
   embeds_many :equipment
   embeds_many :buffs
 
@@ -68,6 +70,10 @@ class Character
       end
     end
     value
+  end
+
+  def size
+    race.size
   end
 
 end

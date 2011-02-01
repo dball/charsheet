@@ -4,12 +4,11 @@ describe Character do
 
   it "should have a name" do
     character = Character.new(:name => 'Gerhard')
-    character.save.should be_true
     character.name.should == 'Gerhard'
   end
 
   it "should not allow duplicate names" do
-    characters = (1..3).map { Character.new(:name => 'Gerhard') }
+    characters = (1..3).map { Factory.build(:character, :name => 'Gerhard').tap { |char| char.save } }
     characters.map { |character| character.save }.should == [true, false, false]
   end
 
@@ -81,6 +80,15 @@ describe Character do
       character.equipment.create(:effects => [{ :str => 3 }])
       character.equipment.create(:effects => [{ :str => 5 }])
       character.str.should == 28
+    end
+
+  end
+
+  describe "size" do
+
+    it "should derive its size from its race" do
+      character = Character.new(:name => 'Gerhard', :race => { :size => 'large' })
+      character.size.should == 'large'
     end
 
   end

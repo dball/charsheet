@@ -7,6 +7,7 @@ FactoryGirl.define do
     base_int 10
     base_wis 10
     base_cha 10
+    race({ :name => 'dwarf', :size => 'medium', :speed => 20 })
   end
 
   factory :equipment do
@@ -19,4 +20,5 @@ FactoryGirl.define do
     character
     name 'Shield'
   end
+
 end
