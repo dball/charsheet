@@ -47,7 +47,7 @@ describe Equipment do
     equipment = [true, false].map do |worn|
       Factory(:equipment, :worn => worn, :character => character)
     end
-    Equipment.worn.all.should == [equipment.first]
+    character.equipment.worn.all.should == [equipment.first]
   end
 
   it "should have an armor scope" do
@@ -55,7 +55,7 @@ describe Equipment do
     equipment = [nil, 0, 8].map do |bonus|
       Factory(:equipment, :ac_bonus => bonus, :character => character)
     end
-    Equipment.armor.all.should == [equipment.last]
+    character.equipment.armor.all.should == [equipment.last]
   end
 
 end

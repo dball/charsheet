@@ -1,19 +1,20 @@
 class Equipment
-  include MongoMapper::Document         
+  include Mongoid::Document         
 
-  key :name, :required => true
-  key :slot
-  key :worn
+  embedded_in :character, :inverse_of => :equipment
+  embeds_many :effects
 
-  key :bonus_type
+  field :name
+  field :slot
+  field :worn
+
+  field :bonus_type
   Ability::ABILITIES.each do |ability|
-    key "#{ability}_bonus"
+    field "#{ability}_bonus"
   end
-  key :ac_bonus
+  field :ac_bonus
 
   scope :worn, where(:worn => true)
   scope :armor, where(:ac_bonus.gt => 0)
-
-  belongs_to :character
 
 end

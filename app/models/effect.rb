@@ -1,11 +1,13 @@
 class Effect
-  include MongoMapper::Document
+  include Mongoid::Document
 
-  key :type
-  key :operator
+  embedded_in :equipment, :inverse_of => :effects
+
+  field :type
+  field :operator
   Ability::ABILITIES.each do |ability|
-    key ability
+    field ability
   end
-  key :ac
+  field :ac
 
 end

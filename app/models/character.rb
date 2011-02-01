@@ -1,12 +1,14 @@
 class Character
-  include MongoMapper::Document         
+  include Mongoid::Document         
 
-  key :name, :required => true
+  embeds_many :equipment
+
+  field :name
+  validates_presence_of :name
   validates_uniqueness_of :name
 
   Ability::ABILITIES.each do |ability|
-    key "base_#{ability}"
-
+    field "base_#{ability}"
     validates_numericality_of "base_#{ability}",
       :allow_nil => true, :only_integer => true
 
@@ -33,7 +35,10 @@ class Character
   end
 
   Skill.all.each do |name, skill|
-    key "#{name}_ranks".to_sym, :default => 0
+    field "#{name}_ranks".to_sym, :default => 0
+    validates_numericality_of "#{name}_ranks",
+      :allow_nil => true, :only_integer => true
+
     define_method "#{name}_modifier".to_sym do
       skill = Skill.send(name)
       value = send("#{name}_ranks") + send("#{skill.ability}_modifier")
@@ -48,8 +53,6 @@ class Character
       value
     end
   end
-
-  has_many :equipment
 
   def armor_class
     value = 10 + dex_modifier

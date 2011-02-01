@@ -45,7 +45,7 @@ module Charsheet
     config.filter_parameters += [:password]
     
     config.generators do |g|
-      g.orm :mongo_mapper
+      g.orm :mongoid
       g.test_framework :rspec
     end
   end
