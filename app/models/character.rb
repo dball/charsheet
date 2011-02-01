@@ -9,7 +9,7 @@ class Character
   validates_uniqueness_of :name
 
   def effects
-    equipment.worn.map { |eq| eq.effects }.flatten
+    (equipment.worn + buffs.active).map { |eq| eq.effects }.flatten
   end
 
   Ability::ABILITIES.each do |ability|
@@ -60,7 +60,7 @@ class Character
     value = 10 + dex_modifier
     armor_effects = effects.select { |eff| eff.ac.present? }
     armor_effects.group_by(&:type).each do |type, effects|
-      if type.present?
+      if type.present? && type != 'dodge'
         value += effects.map(&:ac).sort.last
       else
         value = effects.inject(value) { |sum, effect| sum + effect.ac }

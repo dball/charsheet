@@ -51,7 +51,11 @@ describe Character do
     end
 
     it "should stack dodge bonuses" do
-      pending
+      character = Factory(:character, :base_dex => 14)
+      character.buffs.create(:effects => [{ :ac => 4, :type => 'dodge' }])
+      character.buffs.create(:effects => [{ :ac => 6, :type => 'dodge' }])
+      character.buffs.create(:effects => [{ :ac => 1, :type => 'luck' }])
+      character.armor_class.should == 23
     end
 
   end
