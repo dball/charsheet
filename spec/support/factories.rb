@@ -14,4 +14,9 @@ FactoryGirl.define do
     name 'Belt of Giant Strength'
     slot 'belt'
   end
+
+  factory :buff do
+    character
+    name 'Shield'
+  end
 end

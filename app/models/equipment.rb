@@ -6,7 +6,7 @@ class Equipment
 
   field :name
   field :slot
-  field :worn
+  field :worn, :type => Boolean, :default => true
 
   scope :worn, where(:worn => true)
   scope :armor, where(:slot => 'armor')

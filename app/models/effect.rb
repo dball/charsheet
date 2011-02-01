@@ -1,13 +1,13 @@
 class Effect
   include Mongoid::Document
 
-  embedded_in :equipment, :inverse_of => :effects
+  embedded_in :effector, :inverse_of => :effects
 
   field :type
-  field :operator
+  field :operator, :default => '='
   Ability::ABILITIES.each do |ability|
-    field ability
+    field ability, :type => Integer
   end
-  field :ac
+  field :ac, :type => Integer
 
 end

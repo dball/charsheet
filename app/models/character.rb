@@ -2,6 +2,7 @@ class Character
   include Mongoid::Document         
 
   embeds_many :equipment
+  embeds_many :buffs
 
   field :name
   validates_presence_of :name
@@ -12,24 +13,13 @@ class Character
   end
 
   Ability::ABILITIES.each do |ability|
-    field "base_#{ability}"
+    field "base_#{ability}", :type => Integer
     validates_numericality_of "base_#{ability}",
       :allow_nil => true, :only_integer => true
 
     define_method(ability.to_sym) do
       value = send("base_#{ability}")
       return unless value
-      #bonus_types = Set.new
-      #equipment.worn.group_by(&:bonus_type).each do |bonus_type, items|
-      #  bonuses = items.map { |item| item.send("#{ability}_bonus") }.compact
-      #  unless bonuses.empty?
-      #    if bonus_type.present?
-      #      value += bonuses.sort.last
-      #    else
-      #      value = bonuses.inject(value) { |sum, bonus| sum + bonus }
-      #    end
-      #  end
-      #end
       ability_effects = effects.select { |eff| eff.send(ability).present? }
       ability_effects.group_by(&:type).each do |type, effects|
         if type.present?
@@ -47,7 +37,7 @@ class Character
   end
 
   Skill.all.each do |name, skill|
-    field "#{name}_ranks".to_sym, :default => 0
+    field "#{name}_ranks".to_sym, :type => Integer, :default => 0
     validates_numericality_of "#{name}_ranks",
       :allow_nil => true, :only_integer => true
 
