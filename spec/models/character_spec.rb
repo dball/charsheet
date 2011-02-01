@@ -34,54 +34,55 @@ describe Character do
     character.armor_class.should == 14
   end
 
-  it "should apply worn armor to armor class" do
-    character = Factory(:character, :base_dex => 10)
-    character.equipment.create(:slot => 'armor', :worn => true, :name => 'foo').tap do |eq|
-      eq.effects.build(:ac => 8, :operator => '+')
+  describe "armor effects" do
+
+    it "should apply worn armor to armor class" do
+      character = Factory(:character, :base_dex => 10)
+      character.equipment.create(:slot => 'armor', :worn => true, :name => 'foo').tap do |eq|
+        eq.effects.build(:ac => 8, :operator => '+')
+      end
+      character.armor_class.should == 18
     end
-    character.armor_class.should == 18
+  
+    it "should not stack armor bonuses of the same type" do
+      character = Factory(:character, :base_dex => 10)
+      character.equipment.create(:slot => 'armor', :worn => true, :name => 'foo', :effects => [ { :ac => 4, :operator => '+', :type => 'armor' } ])
+      character.equipment.create(:slot => 'armor', :worn => true, :name => 'bar', :effects => [ { :ac => 8, :operator => '+', :type => 'armor' } ])
+      character.equipment.create(:slot => 'armor', :worn => true, :name => 'baz', :effects => [ { :ac => 1, :operator => '+', :type => 'luck' } ])
+      character.armor_class.should == 19
+    end
+
+    it "should stack dodge bonuses" do
+      pending
+    end
+
   end
 
-  it "should not stack armor bonuses of the same type" do
-    character = Factory(:character, :base_dex => 10)
-    character.equipment.create(:slot => 'armor', :worn => true, :name => 'foo', :effects => [ { :ac => 4, :operator => '+', :type => 'armor' } ])
-    character.equipment.create(:slot => 'armor', :worn => true, :name => 'bar', :effects => [ { :ac => 8, :operator => '+', :type => 'armor' } ])
-    character.equipment.create(:slot => 'armor', :worn => true, :name => 'baz', :effects => [ { :ac => 1, :operator => '+', :type => 'luck' } ])
-    character.armor_class.should == 19
-  end
+  describe "ability effects" do
+  
+    it "should apply worn equipment bonuses to ability scores" do
+      character = Factory(:character, :base_str => 18)
+      character.equipment.create(:worn => true, :name => 'foo', :effects => [ { :str => 4, :operator => '+' }])
+      character.str.should == 22
+    end
+  
+    it "should not stack equipment bonuses of the same type" do
+      character = Factory(:character, :base_str => 18)
+      character.equipment.create(:worn => true, :name => 'foo', :effects => [ { :str => 2, :operator => '+', :type => 'morale' } ])
+      character.equipment.create(:worn => true, :name => 'bar', :effects => [ { :str => 4, :operator => '+', :type => 'morale' } ])
+      character.equipment.create(:worn => true, :name => 'baz', :effects => [ { :str => 7, :operator => '+', :type => 'luck' } ])
+    end
+  
+    it "should stack untyped equipment bonuses" do
+      character = Factory(:character, :base_str => 18)
+      character.equipment.create(:worn => true, :name => 'foo', :effects => [ { :str => 2, :operator => '+', :type => 'morale' } ])
+      character.equipment.create(:worn => true, :name => 'bar', :effects => [ { :str => 3, :operator => '+' } ])
+      character.equipment.create(:worn => true, :name => 'baz', :effects => [ { :str => 5, :operator => '+' } ])
+      character.str.should == 28
+    end
 
-  it "should apply worn equipment bonuses to ability scores" do
-    character = Factory(:character, :base_str => 18)
-    character.equipment.create(:str_bonus => 4, :worn => true, :name => 'foo')
-    character.str.should == 22
   end
-
-  it "should not apply unworn equipment bonuses to ability scores" do
-    character = Factory(:character, :base_str => 18)
-    character.equipment.create(:str_bonus => 4, :worn => false, :name => 'foo')
-    character.str.should == 18
-  end
-
-  it "should not stack equipment bonuses of the same type" do
-    character = Factory(:character, :base_str => 18)
-    character.equipment.create(
-      :str_bonus => 2, :worn => true, :bonus_type => 'morale', :name => 'foo')
-    character.equipment.create(
-      :str_bonus => 4, :worn => true, :bonus_type => 'morale', :name => 'bar')
-    character.equipment.create(
-      :str_bonus => 7, :worn => true, :bonus_type => 'luck', :name => 'baz')
-    character.str.should == 29
-  end
-
-  it "should stack untyped equipment bonuses" do
-    character = Factory(:character, :base_str => 18)
-    character.equipment.create(
-      :str_bonus => 2, :worn => true, :bonus_type => 'morale', :name => 'foo')
-    character.equipment.create(:str_bonus => 3, :worn => true, :name => 'bar')
-    character.equipment.create(:str_bonus => 5, :worn => true, :name => 'baz')
-    character.str.should == 28
-  end
-
+  
   describe "skills" do
 
     it "should accept ranks in all of the core skills" do

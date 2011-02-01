@@ -7,6 +7,10 @@ class Character
   validates_presence_of :name
   validates_uniqueness_of :name
 
+  def effects
+    equipment.worn.map { |eq| eq.effects }.flatten
+  end
+
   Ability::ABILITIES.each do |ability|
     field "base_#{ability}"
     validates_numericality_of "base_#{ability}",
@@ -15,15 +19,23 @@ class Character
     define_method(ability.to_sym) do
       value = send("base_#{ability}")
       return unless value
-      bonus_types = Set.new
-      equipment.worn.group_by(&:bonus_type).each do |bonus_type, items|
-        bonuses = items.map { |item| item.send("#{ability}_bonus") }.compact
-        unless bonuses.empty?
-          if bonus_type.present?
-            value += bonuses.sort.last
-          else
-            value = bonuses.inject(value) { |sum, bonus| sum + bonus }
-          end
+      #bonus_types = Set.new
+      #equipment.worn.group_by(&:bonus_type).each do |bonus_type, items|
+      #  bonuses = items.map { |item| item.send("#{ability}_bonus") }.compact
+      #  unless bonuses.empty?
+      #    if bonus_type.present?
+      #      value += bonuses.sort.last
+      #    else
+      #      value = bonuses.inject(value) { |sum, bonus| sum + bonus }
+      #    end
+      #  end
+      #end
+      ability_effects = effects.select { |eff| eff.send(ability).present? }
+      ability_effects.group_by(&:type).each do |type, effects|
+        if type.present?
+          value += effects.map { |eff| eff.send(ability) }.sort.last
+        else
+          value = effects.inject(value) { |sum, eff| sum + eff.send(ability) }
         end
       end
       value
@@ -56,9 +68,7 @@ class Character
 
   def armor_class
     value = 10 + dex_modifier
-    armor_effects = equipment.worn.map do |eq|
-      eq.effects.select { |eff| eff.ac.present? }
-    end.flatten
+    armor_effects = effects.select { |eff| eff.ac.present? }
     armor_effects.group_by(&:type).each do |type, effects|
       if type.present?
         value += effects.map(&:ac).sort.last
