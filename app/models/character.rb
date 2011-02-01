@@ -1,6 +1,7 @@
 class Character
   include Mongoid::Document         
 
+  embeds_one :race
   embeds_many :equipment
   embeds_many :buffs
 
@@ -56,7 +57,7 @@ class Character
     end
   end
 
-  def armor_class
+  def ac
     value = 10 + dex_modifier
     armor_effects = effects.select { |eff| eff.ac.present? }
     armor_effects.group_by(&:type).each do |type, effects|

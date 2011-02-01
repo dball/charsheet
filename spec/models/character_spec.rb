@@ -24,22 +24,22 @@ describe Character do
     end
   end
 
-  it "should have armor class" do
+  it "should have ac" do
     character = Factory(:character, :base_dex => 10)
-    character.armor_class.should == 10
+    character.ac.should == 10
   end
 
-  it "should apply dex modifier to armor class" do
+  it "should apply dex modifier to ac" do
     character = Factory(:character, :base_dex => 18)
-    character.armor_class.should == 14
+    character.ac.should == 14
   end
 
   describe "armor effects" do
 
-    it "should apply worn armor to armor class" do
+    it "should apply worn armor to ac" do
       character = Factory(:character, :base_dex => 10)
       character.equipment.create(:slot => 'armor', :effects => [{ :ac => 8 }])
-      character.armor_class.should == 18
+      character.ac.should == 18
     end
   
     it "should not stack armor bonuses of the same type" do
@@ -47,7 +47,7 @@ describe Character do
       character.equipment.create(:effects => [{ :ac => 4, :type => 'armor' }])
       character.equipment.create(:effects => [{ :ac => 8, :type => 'armor' }])
       character.equipment.create(:effects => [{ :ac => 1, :type => 'luck' }])
-      character.armor_class.should == 19
+      character.ac.should == 19
     end
 
     it "should stack dodge bonuses" do
@@ -55,7 +55,7 @@ describe Character do
       character.buffs.create(:effects => [{ :ac => 4, :type => 'dodge' }])
       character.buffs.create(:effects => [{ :ac => 6, :type => 'dodge' }])
       character.buffs.create(:effects => [{ :ac => 1, :type => 'luck' }])
-      character.armor_class.should == 23
+      character.ac.should == 23
     end
 
   end
