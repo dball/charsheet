@@ -76,4 +76,17 @@ class Character
     race.size
   end
 
+  def speed
+    value = race.speed
+    speed_effects = effects.select { |eff| eff.speed.present? }
+    speed_effects.group_by(&:type).each do |type, effects|
+      if type.present?
+        value += effects.map(&:speed).sort.last
+      else
+        value = effects.inject(value) { |sum, effect| sum + effect.speed }
+      end
+    end
+    value
+  end
+
 end

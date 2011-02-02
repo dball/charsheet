@@ -87,8 +87,31 @@ describe Character do
   describe "size" do
 
     it "should derive its size from its race" do
-      character = Character.new(:name => 'Gerhard', :race => { :size => 'large' })
+      character = Character.new(:race => { :size => 'large' })
       character.size.should == 'large'
+    end
+
+    it "should add effects to its size" do
+      pending
+    end
+
+  end
+
+  describe "speed" do
+
+    it "should derive its speed from its race" do
+      character = Character.new(:race => { :speed => 45 })
+      character.speed.should == 45
+    end
+
+    it "should add effects to its speed" do
+      character = Factory(:character)
+      character.race.speed = 30
+      character.buffs.create(:effects => [{ :speed => 10, :type => 'morale'}])
+      character.buffs.create(:effects => [{ :speed => 5, :type => 'morale'}])
+      character.buffs.create(:effects => [{ :speed => 25 }])
+      character.equipment.create(:effects => [{ :speed => 5, :type => 'enhancement' }])
+      character.speed.should == 70
     end
 
   end
