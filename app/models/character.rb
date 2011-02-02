@@ -20,6 +20,20 @@ class Character
     effectors.map { |eq| eq.effects }.flatten
   end
 
+  def effective_value(base, field)
+    value = base
+    relevant_effects = effects.select { |eff| eff.send(field).present? }
+    relevant_effects.group_by(&:type).each do |type, effects|
+      values = effects.map { |eff| eff.send(field) }
+      value += if type.present? && type != 'dodge'
+        values.max
+      else
+        values.inject { |sum, val| sum + val }
+      end
+    end
+    value
+  end
+
   Ability::ABILITIES.each do |ability|
     field "base_#{ability}", :type => Integer
     validates_numericality_of "base_#{ability}",
@@ -28,15 +42,7 @@ class Character
     define_method(ability.to_sym) do
       value = send("base_#{ability}")
       return unless value
-      ability_effects = effects.select { |eff| eff.send(ability).present? }
-      ability_effects.group_by(&:type).each do |type, effects|
-        if type.present?
-          value += effects.map { |eff| eff.send(ability) }.sort.last
-        else
-          value = effects.inject(value) { |sum, eff| sum + eff.send(ability) }
-        end
-      end
-      value
+      effective_value(value, ability)
     end
 
     define_method("#{ability}_modifier".to_sym) do
@@ -69,16 +75,7 @@ class Character
   end
 
   def ac
-    value = 10 + dex_modifier
-    armor_effects = effects.select { |eff| eff.ac.present? }
-    armor_effects.group_by(&:type).each do |type, effects|
-      if type.present? && type != 'dodge'
-        value += effects.map(&:ac).sort.last
-      else
-        value = effects.inject(value) { |sum, effect| sum + effect.ac }
-      end
-    end
-    value
+    effective_value(10 + dex_modifier, :ac)
   end
 
   def size
@@ -86,16 +83,7 @@ class Character
   end
 
   def speed
-    value = race.speed
-    speed_effects = effects.select { |eff| eff.speed.present? }
-    speed_effects.group_by(&:type).each do |type, effects|
-      if type.present?
-        value += effects.map(&:speed).sort.last
-      else
-        value = effects.inject(value) { |sum, effect| sum + effect.speed }
-      end
-    end
-    value
+    effective_value(race.speed, :speed)
   end
 
   def hp
@@ -104,18 +92,10 @@ class Character
 
   { :fortitude => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
     define_method "#{save}_save" do
-      value = levels.inject(send("#{ability}_modifier")) do |sum, level|
+      base = levels.inject(send("#{ability}_modifier")) do |sum, level|
         sum += level.send(save)
       end
-      save_effects = effects.select { |eff| eff.send(save).present? }
-      save_effects.group_by(&:type).each do |type, effects|
-        if type.present?
-          value += effects.map { |eff| eff.send(save) }.sort.last
-        else
-          value = effects.inject(value) { |sum, eff| sum += eff.send(save) }
-        end
-      end
-      value
+      effective_value(base, save)
     end
   end
 
