@@ -73,3 +73,16 @@ class Paladin < Klass
     ]
   end
 end
+
+class Rogue < Klass
+  hd 6
+  skills %w(many)
+  bab :three_quarters
+  fort :bad
+  reflex :good
+  will :bad
+
+  level(1) do
+    intrinsic :sneak_attack, :value => '1d6'
+  end
+end
