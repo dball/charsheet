@@ -35,6 +35,8 @@ calculated values.
 
 * Allow character to receive wounds and healing
 
+* Allow character to receive conditions, e.g. shaken or entangled.
+
 * Allow character to set their power attack modifier
 
 * Feats are going to be interesting, and will probably end up being be a pile
