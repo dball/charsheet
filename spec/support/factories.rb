@@ -21,4 +21,8 @@ FactoryGirl.define do
     name 'Shield'
   end
 
+  factory :adjustment do
+    character
+  end
+
 end

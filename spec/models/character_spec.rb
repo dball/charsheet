@@ -46,6 +46,11 @@ describe Character do
       character.str.should == 28
     end
 
+    it "should apply adjustment bonuses" do
+      character = Character.new(:base_str => 18, :adjustment => { :effects => [{ :str => 12 }] })
+      character.str.should == 30
+    end
+
   end
 
   describe "hp" do

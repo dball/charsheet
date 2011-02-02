@@ -4,6 +4,8 @@ class Character
   embeds_one :race
   validates_presence_of :race
 
+  embeds_one :adjustment
+
   embeds_many :levels
   embeds_many :equipment
   embeds_many :buffs
@@ -13,7 +15,9 @@ class Character
   validates_uniqueness_of :name
 
   def effects
-    (equipment.worn + buffs.active).map { |eq| eq.effects }.flatten
+    effectors = equipment.worn + buffs.active
+    effectors.push(adjustment) if adjustment.present?
+    effectors.map { |eq| eq.effects }.flatten
   end
 
   Ability::ABILITIES.each do |ability|
