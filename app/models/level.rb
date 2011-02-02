@@ -9,4 +9,9 @@ class Level
   field :hp, :type => Integer
   validates_presence_of :hp
 
+  %w(fortitude reflex will).each do |save|
+    field save, :type => Integer, :default => 0
+    validates_presence_of save
+  end
+
 end

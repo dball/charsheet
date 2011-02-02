@@ -100,6 +100,19 @@ describe Character do
 
   end
 
+  describe "saves" do
+
+    it "should derive reflex from dexterity, levels, and effects" do
+      character = Factory(:character, :base_dex => 18)
+      [2, 0, 1].each do |save|
+        character.levels.build(:reflex => save)
+      end
+      character.equipment.build(:effects => [{ :reflex => 4, :type => 'resistance' }])
+      character.reflex_save.should == 11
+    end
+
+  end
+
   describe "size" do
 
     it "should derive its size from its race" do

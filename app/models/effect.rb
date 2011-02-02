@@ -9,5 +9,8 @@ class Effect
     field ability, :type => Integer
   end
   field :ac, :type => Integer
+  %w(fortitude reflex will).each do |save|
+    field save, :type => Integer
+  end
 
 end

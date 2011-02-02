@@ -1,5 +1,5 @@
 class Character
-  include Mongoid::Document         
+  include Mongoid::Document
 
   embeds_one :race
   validates_presence_of :race
@@ -96,6 +96,25 @@ class Character
 
   def hp
     levels.inject(0) { |sum, level| sum += level.hp + con_modifier }
+  end
+
+  { :fortitude => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
+    define_method "#{save}_save" do
+      value = levels.inject(send("#{ability}_modifier")) do |sum, level|
+        sum += level.send(save)
+      end
+      puts "#{save} EFFECTS: #{effects.inspect}"
+      save_effects = effects.select { |eff| eff.send(save).present? }
+      puts "#{save} SAVE EFFECTS: #{save_effects.inspect}"
+      save_effects.group_by(&:type).each do |type, effects|
+        if type.present?
+          value += effects.map { |eff| eff.send(save) }.sort.last
+        else
+          value = effects.inject(value) { |sum, eff| sum += eff.send(save) }
+        end
+      end
+      value
+    end
   end
 
 end

@@ -14,4 +14,11 @@ describe 'Level' do
     @level.hp.should == 8
   end
 
+  it "should have saves" do
+    %w(fortitude reflex will).each do |save|
+      @level.send("#{save}=", 2)
+      @level.send(save).should == 2
+    end
+  end
+
 end
