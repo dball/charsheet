@@ -4,6 +4,7 @@ class Character
   embeds_one :race
   validates_presence_of :race
 
+  embeds_many :levels
   embeds_many :equipment
   embeds_many :buffs
 
@@ -87,6 +88,10 @@ class Character
       end
     end
     value
+  end
+
+  def hp
+    levels.inject(0) { |sum, level| sum += level.hp + con_modifier }
   end
 
 end

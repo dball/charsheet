@@ -23,6 +23,13 @@ describe Character do
     end
   end
 
+  it "should derive hp from con and levels" do
+    character = Factory(:character, :base_con => 12)
+    character.levels.build(:hp => 5)
+    character.levels.build(:hp => 7)
+    character.hp.should == 14
+  end
+
   it "should have ac" do
     character = Factory(:character, :base_dex => 10)
     character.ac.should == 10
