@@ -35,6 +35,8 @@ calculated values.
 
 * Allow character to receive wounds and healing
 
+* DR
+
 * Allow character to receive conditions, e.g. shaken or entangled.
 
 * Allow character to set their power attack modifier
