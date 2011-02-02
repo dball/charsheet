@@ -12,62 +12,19 @@ describe Character do
     characters.map { |character| character.save }.should == [true, false, false]
   end
 
-  it "should have ability scores and modifiers" do
-    character = Character.new(:name => 'Gerhard')
-    scores = [18, 17, 16, 9, 8, 0]
-    modifiers = [4, 3, 3, -1, -1, -5]
-    Ability::ABILITIES.zip(scores, modifiers).each do |ability, score, modifier|
-      character.send("base_#{ability}=", score)
-      character.send(ability).should == score
-      character.send("#{ability}_modifier").should == modifier
-    end
-  end
-
-  it "should derive hp from con and levels" do
-    character = Factory(:character, :base_con => 12)
-    character.levels.build(:hp => 5)
-    character.levels.build(:hp => 7)
-    character.hp.should == 14
-  end
-
-  it "should have ac" do
-    character = Factory(:character, :base_dex => 10)
-    character.ac.should == 10
-  end
-
-  it "should apply dex modifier to ac" do
-    character = Factory(:character, :base_dex => 18)
-    character.ac.should == 14
-  end
-
-  describe "armor effects" do
-
-    it "should apply worn armor to ac" do
-      character = Factory(:character, :base_dex => 10)
-      character.equipment.create(:slot => 'armor', :effects => [{ :ac => 8 }])
-      character.ac.should == 18
-    end
+  describe "abilities" do
   
-    it "should not stack armor bonuses of the same type" do
-      character = Factory(:character, :base_dex => 10)
-      character.equipment.create(:effects => [{ :ac => 4, :type => 'armor' }])
-      character.equipment.create(:effects => [{ :ac => 8, :type => 'armor' }])
-      character.equipment.create(:effects => [{ :ac => 1, :type => 'luck' }])
-      character.ac.should == 19
+    it "should have ability scores and modifiers" do
+      character = Character.new(:name => 'Gerhard')
+      scores = [18, 17, 16, 9, 8, 0]
+      modifiers = [4, 3, 3, -1, -1, -5]
+      Ability::ABILITIES.zip(scores, modifiers).each do |ability, score, modifier|
+        character.send("base_#{ability}=", score)
+        character.send(ability).should == score
+        character.send("#{ability}_modifier").should == modifier
+      end
     end
 
-    it "should stack dodge bonuses" do
-      character = Factory(:character, :base_dex => 14)
-      character.buffs.create(:effects => [{ :ac => 4, :type => 'dodge' }])
-      character.buffs.create(:effects => [{ :ac => 6, :type => 'dodge' }])
-      character.buffs.create(:effects => [{ :ac => 1, :type => 'luck' }])
-      character.ac.should == 23
-    end
-
-  end
-
-  describe "ability effects" do
-  
     it "should apply worn equipment bonuses to ability scores" do
       character = Factory(:character, :base_str => 18)
       character.equipment.create(:worn => true, :name => 'foo', :effects => [{ :str => 4 }])
@@ -87,6 +44,53 @@ describe Character do
       character.equipment.create(:effects => [{ :str => 3 }])
       character.equipment.create(:effects => [{ :str => 5 }])
       character.str.should == 28
+    end
+
+  end
+
+  describe "hp" do
+
+    it "should derive hp from con and levels" do
+      character = Factory(:character, :base_con => 12)
+      character.levels.build(:hp => 5)
+      character.levels.build(:hp => 7)
+      character.hp.should == 14
+    end
+  
+  end
+
+  describe "ac" do
+
+    it "should have ac" do
+      character = Factory(:character, :base_dex => 10)
+      character.ac.should == 10
+    end
+  
+    it "should apply dex modifier to ac" do
+      character = Factory(:character, :base_dex => 18)
+      character.ac.should == 14
+    end
+
+    it "should apply armor effects to ac" do
+      character = Factory(:character, :base_dex => 10)
+      character.equipment.create(:slot => 'armor', :effects => [{ :ac => 8 }])
+      character.ac.should == 18
+    end
+  
+    it "should not stack armor effect bonuses of the same type" do
+      character = Factory(:character, :base_dex => 10)
+      character.equipment.create(:effects => [{ :ac => 4, :type => 'armor' }])
+      character.equipment.create(:effects => [{ :ac => 8, :type => 'armor' }])
+      character.equipment.create(:effects => [{ :ac => 1, :type => 'luck' }])
+      character.ac.should == 19
+    end
+
+    it "should stack dodge bonuses" do
+      character = Factory(:character, :base_dex => 14)
+      character.buffs.create(:effects => [{ :ac => 4, :type => 'dodge' }])
+      character.buffs.create(:effects => [{ :ac => 6, :type => 'dodge' }])
+      character.buffs.create(:effects => [{ :ac => 1, :type => 'luck' }])
+      character.ac.should == 23
     end
 
   end
