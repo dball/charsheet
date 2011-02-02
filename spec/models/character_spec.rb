@@ -14,7 +14,7 @@ describe Character do
 
   describe "abilities" do
   
-    it "should have ability scores and modifiers" do
+    it "should have ability scores, modifiers, and bonuses" do
       character = Character.new(:name => 'Gerhard')
       scores = [18, 17, 16, 9, 8, 0]
       modifiers = [4, 3, 3, -1, -1, -5]
@@ -22,6 +22,7 @@ describe Character do
         character.send("base_#{ability}=", score)
         character.send(ability).should == score
         character.send("#{ability}_modifier").should == modifier
+        character.send("#{ability}_bonus").should == [modifier, 0].max
       end
     end
 
