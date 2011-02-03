@@ -1,4 +1,7 @@
 class Klass
+
+  @saves = {}
+
   def self.hd(die)
   end
 
@@ -12,16 +15,45 @@ class Klass
   end
 
   def self.fort(fort)
+    set_save_progression(:fort, fort)
   end
 
   def self.reflex(reflex)
+    set_save_progression(:reflex, reflex)
   end
 
   def self.will(will)
+    set_save_progression(:will, will)
   end
 
-  def self.level(number)
+  def self.level(level)
+    saves = [:fort, :reflex, :will].map do |save|
+      case @saves[save]
+        when :good then level == 1 ? 2 : (level + 1) % 2
+        when :bad then level % 3 == 0 ? 1 : 0
+      end
+    end
+    Level.new(*saves)
   end
+
+
+  private
+
+  def self.set_save_progression(save, progression)
+    @saves ||= {}
+    @saves[save] = progression
+  end
+
+  class Level
+
+    attr_reader :fort, :reflex, :will
+
+    def initialize(*args)
+      @fort, @reflex, @will = args
+    end
+
+  end
+    
 end
 
 class Barbarian < Klass
