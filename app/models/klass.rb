@@ -12,6 +12,7 @@ class Klass
   end
 
   def self.bab(bab)
+    set_bab(bab)
   end
 
   def self.fort(fort)
@@ -28,16 +29,25 @@ class Klass
 
   def self.level(level)
     saves = [:fort, :reflex, :will].map do |save|
-      case @saves[save]
+      case @saves && @saves[save]
         when :good then level == 1 ? 2 : (level + 1) % 2
         when :bad then level % 3 == 0 ? 1 : 0
       end
     end
-    Level.new(*saves)
+    bab = case @bab
+      when :full then 1
+      when :three_quarters then (level - 1) % 4 == 0 ? 0 : 1
+      when :one_half then (level % 2) == 1 ? 0 : 1
+    end
+    Level.new(*(saves.push(bab)))
   end
 
 
   private
+
+  def self.set_bab(bab)
+    @bab = bab
+  end
 
   def self.set_save_progression(save, progression)
     @saves ||= {}
@@ -46,10 +56,10 @@ class Klass
 
   class Level
 
-    attr_reader :fort, :reflex, :will
+    attr_reader :fort, :reflex, :will, :bab
 
     def initialize(*args)
-      @fort, @reflex, @will = args
+      @fort, @reflex, @will, @bab = args
     end
 
   end
