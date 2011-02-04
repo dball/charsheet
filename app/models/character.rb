@@ -28,7 +28,7 @@ class Character
       value += if type.present? && type != 'dodge'
         values.max
       else
-        values.inject { |sum, val| sum + val }
+        values.reduce(&:+)
       end
     end
     value
@@ -92,10 +92,9 @@ class Character
 
   { :fortitude => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
     define_method "#{save}_save" do
-      base = levels.inject(send("#{ability}_modifier")) do |sum, level|
-        sum += level.send(save)
-      end
-      effective_value(base, save)
+      value = send("#{ability}_modifier")
+      value += levels.map { |level| level.send(save) }.reduce(&:+)
+      effective_value(value, save)
     end
   end
 
