@@ -12,5 +12,7 @@ class Effect
   %w(fort reflex will).each do |save|
     field save, :type => Integer
   end
+  field :attack, :type => Integer
+  field :damage, :type => Integer
 
 end
