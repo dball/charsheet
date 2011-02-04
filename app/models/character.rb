@@ -90,7 +90,7 @@ class Character
     levels.inject(0) { |sum, level| sum += level.hp + con_modifier }
   end
 
-  { :fortitude => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
+  { :fort => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
     define_method "#{save}_save" do
       value = send("#{ability}_modifier")
       value += levels.map { |level| level.send(save) }.reduce(&:+)

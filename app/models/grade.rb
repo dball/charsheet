@@ -111,7 +111,7 @@ class Paladin < Grade
   end
   level(2) do
     intrinsic :divine_grace, :effects => [
-      { :fortitude => :cha_bonus, :reflex => :cha_bonus, :will => :cha_bonus }
+      { :fort => :cha_bonus, :reflex => :cha_bonus, :will => :cha_bonus }
     ]
   end
 end

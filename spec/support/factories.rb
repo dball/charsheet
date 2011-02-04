@@ -25,4 +25,11 @@ FactoryGirl.define do
     character
   end
 
+  factory :cclass do
+    name 'rogue'
+    bab 'three_quarters'
+    fort 'bad'
+    reflex 'good'
+    will 'bad'
+  end
 end
