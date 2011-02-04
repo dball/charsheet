@@ -65,6 +65,17 @@ describe Character do
   
   end
 
+  describe "levels" do
+
+    it "should have class levels" do
+      character = Factory(:character)
+      %w(fighter fighter rogue).each do |name|
+        character.levels.build(:klass => name)
+      end
+    end
+
+  end
+
   describe "ac" do
 
     it "should have ac" do

@@ -21,4 +21,26 @@ describe 'Level' do
     end
   end
 
+  describe "levels" do
+
+    before do
+      character = Factory(:character, :levels => [
+        { :klass => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
+        { :klass => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
+        { :klass => 'fighter', :hp => 1, :fort => 0, :reflex => 0, :will => 0 }
+      ])
+      @level = character.levels.last
+      @level.klass.should == 'fighter'
+    end
+
+    it "should know its level" do
+      @level.level.should == 3
+    end
+  
+    it "should know its class level" do
+      @level.klass_level.should == 1
+    end
+
+  end
+
 end
