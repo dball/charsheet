@@ -28,19 +28,23 @@ describe 'Level' do
     end
   end
 
+  it "should copy saves from cclass" do
+    @level.cclass = Factory(:cclass)
+    @level.fort.should == 0
+    @level.reflex.should == 2
+    @level.will.should == 0
+  end
+
   describe "levels" do
 
     before do
       %w(rogue fighter).each do |name|
         Factory(:cclass, :name => name)
       end
-      character = Factory(:character, :levels => [
-        { :cclass_name => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
-        { :cclass_name => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
-        { :cclass_name => 'fighter', :hp => 1, :fort => 0, :reflex => 0, :will => 0 }
-      ])
-      @level = character.levels.last
-      @level.cclass_name.should == 'fighter'
+      character = Factory(:character)
+      character.levels.create(:cclass_name => 'rogue', :hp => 1)
+      character.levels.create(:cclass_name => 'rogue', :hp => 1)
+      @level = character.levels.create(:cclass_name => 'fighter', :hp => 1)
     end
 
     it "should know its level" do

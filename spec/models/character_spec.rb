@@ -67,10 +67,16 @@ describe Character do
 
   describe "levels" do
 
+    before do
+      %w(fighter rogue).each do |name|
+        Factory(:cclass, :name => name)
+      end
+    end
+
     it "should have class levels" do
       character = Factory(:character)
       %w(fighter fighter rogue).each do |name|
-        character.levels.build(:grade => name)
+        character.levels.build(:cclass_name => name)
       end
     end
 

@@ -33,4 +33,12 @@ class Level
     character.levels.cclass(cclass).to_a.index(self) + 1
   end
 
+  def cclass=(cclass)
+    self[:cclass_id] = cclass.id
+    clevel = cclass.clevel(cclass_level)
+    %w(fort reflex will).each do |save|
+      self.send("#{save}=", clevel.send(save))
+    end
+  end
+
 end
