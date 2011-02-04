@@ -3,8 +3,8 @@ class Level
 
   embedded_in :character, :inverse_of => :levels
 
-  field :klass
-  validates_presence_of :klass
+  field :grade
+  validates_presence_of :grade
 
   field :hp, :type => Integer
   validates_presence_of :hp
@@ -16,14 +16,14 @@ class Level
     validates_numericality_of save, :greater_than_or_equal_to => 0
   end
 
-  scope :char_class, lambda { |name| where(:klass => name) }
+  scope :grade, lambda { |name| where(:grade => name) }
 
   def level
     character.levels.index(self) + 1
   end
 
-  def klass_level
-    character.levels.char_class(klass).to_a.index(self) + 1
+  def grade_level
+    character.levels.grade(grade).to_a.index(self) + 1
   end
 
 end

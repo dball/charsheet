@@ -1,4 +1,4 @@
-class Klass
+class Grade
 
   @saves = {}
 
@@ -66,7 +66,7 @@ class Klass
     
 end
 
-class Barbarian < Klass
+class Barbarian < Grade
   hd 12
   skills %w(climb craft handle_animal intimidate jump listen ride survival swim)
   skill_points 4
@@ -96,7 +96,7 @@ class Barbarian < Klass
   end
 end
 
-class Paladin < Klass
+class Paladin < Grade
   hd 10
   skills %w(concentration craft diplomacy handle_animal heal) # FIXME continue
   bab :full
@@ -116,7 +116,7 @@ class Paladin < Klass
   end
 end
 
-class Rogue < Klass
+class Rogue < Grade
   hd 6
   skills %w(many)
   bab :three_quarters

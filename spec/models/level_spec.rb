@@ -4,9 +4,9 @@ describe 'Level' do
     @level = Character.new.levels.build
   end
 
-  it "should have a klass" do
-    @level.klass = 'fighter'
-    @level.klass.should == 'fighter'
+  it "should have a grade" do
+    @level.grade = 'fighter'
+    @level.grade.should == 'fighter'
   end
 
   it "should have hp" do
@@ -25,20 +25,20 @@ describe 'Level' do
 
     before do
       character = Factory(:character, :levels => [
-        { :klass => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
-        { :klass => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
-        { :klass => 'fighter', :hp => 1, :fort => 0, :reflex => 0, :will => 0 }
+        { :grade => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
+        { :grade => 'rogue', :hp => 1, :fort => 0, :reflex => 0, :will => 0 },
+        { :grade => 'fighter', :hp => 1, :fort => 0, :reflex => 0, :will => 0 }
       ])
       @level = character.levels.last
-      @level.klass.should == 'fighter'
+      @level.grade.should == 'fighter'
     end
 
     it "should know its level" do
       @level.level.should == 3
     end
   
-    it "should know its class level" do
-      @level.klass_level.should == 1
+    it "should know its grade level" do
+      @level.grade_level.should == 1
     end
 
   end

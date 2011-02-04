@@ -70,7 +70,7 @@ describe Character do
     it "should have class levels" do
       character = Factory(:character)
       %w(fighter fighter rogue).each do |name|
-        character.levels.build(:klass => name)
+        character.levels.build(:grade => name)
       end
     end
 
