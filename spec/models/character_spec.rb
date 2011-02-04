@@ -58,9 +58,15 @@ describe Character do
 
     it "should derive hp from con and levels" do
       character = Factory(:character, :base_con => 12)
-      character.levels.build(:hp => 5)
-      character.levels.build(:hp => 7)
+      [5, 7].each { |hp| character.levels.build(:hp => hp) }
       character.hp.should == 14
+    end
+
+    it "should apply a minimum of 1 hp per level" do
+      pending "implementing stupid con bonus minimum rule"
+      character = Factory(:character, :base_con => 8)
+      [1, 1, 1].each { |hp| character.levels.build(:hp => hp) }
+      character.hp.should == 3
     end
   
   end

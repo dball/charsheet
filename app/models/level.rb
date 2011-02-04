@@ -13,6 +13,12 @@ class Level
     cclass.name
   end
 
+  Ability::ABILITIES.each do |ability|
+    field ability, :type => Integer
+    validates_numericality_of ability,
+      :allow_nil => true, :only_integer => true
+  end
+
   field :hp, :type => Integer
   validates_presence_of :hp
   validates_numericality_of :hp, :greater_than => 0
@@ -39,6 +45,13 @@ class Level
     %w(fort reflex will).each do |save|
       self.send("#{save}=", clevel.send(save))
     end
+  end
+
+  def effects
+    [self]
+  end
+
+  def type
   end
 
 end

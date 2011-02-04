@@ -15,9 +15,9 @@ class Character
   validates_uniqueness_of :name
 
   def effects
-    effectors = equipment.worn + buffs.active
+    effectors = levels + equipment.worn + buffs.active
     effectors.push(adjustment) if adjustment.present?
-    effectors.map { |eq| eq.effects }.flatten
+    effectors.map { |effector| effector.effects }.flatten
   end
 
   def effective_value(base, field)
@@ -87,14 +87,12 @@ class Character
   end
 
   def hp
-    levels.inject(0) { |sum, level| sum += level.hp + con_modifier }
+    effective_value(con_modifier * levels.length, :hp)
   end
 
   { :fort => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
     define_method "#{save}_save" do
-      value = send("#{ability}_modifier")
-      value += levels.map { |level| level.send(save) }.reduce(&:+)
-      effective_value(value, save)
+      effective_value(send("#{ability}_modifier"), save)
     end
   end
 
