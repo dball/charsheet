@@ -72,13 +72,22 @@ describe Character do
   end
   
   describe "current_hp" do
-    it "should decrease with damage" do
-      character = Factory(:character)
+    it "should change with damage and healing" do
+      character = Factory(:character, :base_con => 10)
       character.levels.build(:hp => 12)
-      character.current_hp = character.hp
       character.current_hp.should == 12
-      character.current_hp -= 4
+      character.wound 4
       character.current_hp.should == 8
+      character.heal 2
+      character.current_hp.should == 10
+    end
+    
+    it "should not heal above max hp" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 12)
+      character.current_hp.should == 12
+      character.heal 10
+      character.current_hp.should == 12
     end
   end
 

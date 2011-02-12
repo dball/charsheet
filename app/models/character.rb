@@ -14,7 +14,8 @@ class Character
   validates_presence_of :name
   validates_uniqueness_of :name
   
-  field :current_hp
+  field :damage, :default => 0
+  validates_numericality_of :damage
 
   def effects
     effectors = levels + equipment.worn + buffs.active
@@ -91,6 +92,21 @@ class Character
 
   def hp
     effective_value(con_modifier * levels.length, :hp)
+  end
+  
+  def current_hp
+    hp - damage
+  end
+  
+  def wound(x)
+    self.damage += x
+  end
+  
+  def heal(x)
+    self.damage -= x
+    if self.damage < 0
+      self.damage = 0
+    end
   end
 
   { :fort => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
