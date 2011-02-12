@@ -103,10 +103,7 @@ class Character
   end
   
   def heal(x)
-    self.damage -= x
-    if self.damage < 0
-      self.damage = 0
-    end
+    self.damage = [self.damage -= x, 0].max
   end
 
   { :fort => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
