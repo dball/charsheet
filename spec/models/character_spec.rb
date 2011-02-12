@@ -70,6 +70,17 @@ describe Character do
     end
   
   end
+  
+  describe "current_hp" do
+    it "should decrease with damage" do
+      character = Factory(:character)
+      character.levels.build(:hp => 12)
+      character.current_hp = character.hp
+      character.current_hp.should == 12
+      character.current_hp -= 4
+      character.current_hp.should == 8
+    end
+  end
 
   describe "levels" do
 

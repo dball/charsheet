@@ -13,6 +13,8 @@ class Character
   field :name
   validates_presence_of :name
   validates_uniqueness_of :name
+  
+  field :current_hp
 
   def effects
     effectors = levels + equipment.worn + buffs.active
