@@ -12,4 +12,10 @@ describe Library do
     @library.races.map(&:name).should == %w(dwarf elf)
   end
 
+  it "should have cclasses" do
+    @library.cclasses.build(Factory.attributes_for(:cclass, :name => 'rogue'))
+    @library.cclasses.build(Factory.attributes_for(:cclass, :name => 'fighter'))
+    @library.cclasses.map(&:name).should == %w(rogue fighter)
+  end
+
 end
