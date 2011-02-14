@@ -32,4 +32,7 @@ FactoryGirl.define do
     reflex 'good'
     will 'bad'
   end
+
+  factory :library do
+  end
 end
