@@ -26,4 +26,9 @@ describe Effect do
     @effect.ac.should == 8
   end
 
+  it "should allow bonuses to be defined in terms of each other" do
+    @effect.ac = 'cha'
+    @effect.ac.should == 'cha'
+  end
+
 end

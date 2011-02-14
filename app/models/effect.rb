@@ -6,13 +6,13 @@ class Effect
   field :type
   field :operator, :default => '='
   Ability::ABILITIES.each do |ability|
-    field ability, :type => Integer
+    field ability
   end
-  field :ac, :type => Integer
+  field :ac
   %w(fort reflex will).each do |save|
-    field save, :type => Integer
+    field save
   end
-  field :attack, :type => Integer
-  field :damage, :type => Integer
+  field :attack
+  field :damage
 
 end

@@ -122,6 +122,12 @@ describe Character do
       character.ac.should == 23
     end
 
+    it "should be able to apply an ability bonus to ac" do
+      character = Factory(:character, :base_dex => 10, :base_wis => 14)
+      character.equipment.create(:effects => [{ :ac => 'wis_bonus' }])
+      character.ac.should == 12
+    end
+
   end
 
   describe "saves" do
