@@ -9,14 +9,12 @@ class Character
   embeds_many :levels
   embeds_many :equipment
   embeds_many :buffs
+  embeds_many :wounds
 
   field :name
   validates_presence_of :name
   validates_uniqueness_of :name
   
-  field :damage, :default => 0
-  validates_numericality_of :damage
-
   def effects
     effectors = levels + equipment.worn + buffs.active
     effectors.push(adjustment) if adjustment.present?
@@ -95,15 +93,24 @@ class Character
   end
   
   def current_hp
+    damage = wounds.inject(0) { |sum, wound| sum + wound[:damage] }
     hp - damage
   end
   
   def wound(x)
-    self.damage += x
+    self.wounds.create({damage: x})
   end
   
   def heal(x)
-    self.damage = [self.damage -= x, 0].max
+    return unless wounds.length > 0
+    targeted_wound = wounds.first
+    targeted_wound[:damage] -= x
+    wounds.delete(targeted_wound) if targeted_wound[:damage] == 0
+    if targeted_wound[:damage] < 0
+      remaining = targeted_wound[:damage].abs
+      wounds.delete(targeted_wound)
+      self.heal(remaining)
+    end
   end
 
   { :fort => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|

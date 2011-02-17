@@ -90,6 +90,31 @@ describe Character do
       character.current_hp.should == 12
     end
   end
+  
+  describe "wounds" do
+    it "should be created on damage" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 8)
+      character.wound 2
+      character.wound 3
+      character.wound 1
+      character.wounds.length.should == 3
+      character.current_hp.should == 2
+    end
+    
+    it "should be removed with sufficient healing" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 8)
+      character.wound 2
+      character.wound 3
+      character.wound 1
+      character.heal 5
+      character.wounds.length.should == 1
+      character.current_hp.should == 7
+      character.heal 7
+      character.wounds.length.should == 0
+    end
+  end
 
   describe "levels" do
 
