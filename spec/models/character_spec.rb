@@ -128,6 +128,12 @@ describe Character do
       character.ac.should == 12
     end
 
+    it "should be able to compute formula bonuses to ac" do
+      character = Factory(:character, :base_dex => 10, :base_wis => 14)
+      character.equipment.create(:effects => [{ :ac => 'wis_bonus + 2' }])
+      character.ac.should == 14
+    end
+
   end
 
   describe "saves" do

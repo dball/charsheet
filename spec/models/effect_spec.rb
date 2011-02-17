@@ -26,9 +26,17 @@ describe Effect do
     @effect.ac.should == 8
   end
 
-  it "should allow bonuses to be defined in terms of each other" do
-    @effect.ac = 'cha'
-    @effect.ac.should == 'cha'
+  it "should allow bonuses to be arbitrary expressions" do
+    @effect.ac = 'cha + 4'
+    @effect.ac.should == 'cha + 4'
+    @effect.should be_valid
+  end
+
+  it "should not allow bonuses to be malicious code" do
+    pending "sandboxing or parsing"
+    @effect.ac = 'Model.delete_all'
+    @effect.ac.should == 'Model.delete_all'
+    @effect.should_not be_valid
   end
 
 end
