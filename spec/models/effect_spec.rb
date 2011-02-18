@@ -39,4 +39,12 @@ describe Effect do
     @effect.should_not be_valid
   end
 
+  it "should parse strings" do
+    pending "parsing"
+    @effect.text = '+1 circumstance bonus to ac'
+    @effect.type.should == 'circumstance'
+    @effect.ac.should == 1
+    @effect.operator.should == '+'
+  end
+
 end
