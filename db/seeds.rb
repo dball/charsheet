@@ -14,13 +14,14 @@ library = Library.create
     fort: 'good',
     reflex: 'bad',
     will: 'bad'
-  ),
+  },
   {
     name: 'paladin',
     bab: 'full',
     fort: 'good',
     reflex: 'bad',
-    will: 'bad'
+    will: 'bad',
+    features: [{ level: 2, name: 'divine grace', effects: [{ fort: 'cha', reflex: 'cha', will: 'cha' }] }]
   },
   {
     name: 'rogue',

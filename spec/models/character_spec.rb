@@ -58,7 +58,9 @@ describe Character do
 
     it "should derive hp from con and levels" do
       character = Factory(:character, :base_con => 12)
+      cclass = Factory(:cclass)
       [5, 7].each { |hp| character.levels.build(:hp => hp) }
+      character.levels.each { |level| level.cclass = cclass }
       character.hp.should == 14
     end
 
@@ -140,8 +142,10 @@ describe Character do
 
     it "should derive reflex from dexterity, levels, and effects" do
       character = Factory(:character, :base_dex => 18)
+      cclass = Factory(:cclass)
       [2, 0, 1].each do |save|
-        character.levels.build(:reflex => save)
+        level = character.levels.build(:reflex => save)
+        level.cclass = cclass
       end
       character.equipment.build(:effects => [{ :reflex => 4, :type => 'resistance' }])
       character.reflex_save.should == 11

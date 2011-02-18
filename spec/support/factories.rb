@@ -33,6 +33,12 @@ FactoryGirl.define do
     will 'bad'
   end
 
+  factory :feature do
+    cclass
+    level 2
+    name 'divine grace'
+  end
+
   factory :library do
   end
 end

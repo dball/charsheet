@@ -47,8 +47,12 @@ class Level
     end
   end
 
+  def features
+    cclass.features.select { |feature| feature.level == cclass_level }
+  end
+
   def effects
-    [self]
+    [self] + features(&:effects).flatten
   end
 
   def type

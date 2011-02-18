@@ -47,4 +47,13 @@ describe 'Cclass' do
 
   end
 
+  describe "features" do
+
+    it "should have features keyed by level" do
+      @cclass.features.create( level: 1, name: 'sneakiness', effects: [{ reflex: '2' }])
+      @cclass.features.map(&:name).should == %w(sneakiness)
+    end
+
+  end
+
 end

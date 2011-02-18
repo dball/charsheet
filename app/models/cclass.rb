@@ -1,6 +1,9 @@
 class Cclass
   include Mongoid::Document
 
+  embedded_in :library, :inverse_of => :cclasses
+  embeds_many :features
+
   field :name
   validates_presence_of :name
   validates_uniqueness_of :name
