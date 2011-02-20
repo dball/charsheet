@@ -2,16 +2,7 @@ class Level
   include Mongoid::Document
 
   embedded_in :character, :inverse_of => :levels
-
   referenced_in :cclass
-
-  def cclass_name=(name)
-    self.cclass = Cclass.named(name)
-  end
-
-  def cclass_name
-    cclass.name
-  end
 
   Ability::ABILITIES.each do |ability|
     field ability, :type => Integer
@@ -28,6 +19,8 @@ class Level
     validates_presence_of save
     validates_numericality_of save, :greater_than_or_equal_to => 0
   end
+
+  field :ac
 
   scope :cclass, lambda { |cclass| where(:cclass_id => cclass.id) }
 
@@ -52,7 +45,7 @@ class Level
   end
 
   def effects
-    [self] + features(&:effects).flatten
+    [self] + features.map(&:effects).flatten
   end
 
   def type

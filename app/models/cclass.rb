@@ -1,7 +1,7 @@
 class Cclass
   include Mongoid::Document
 
-  embedded_in :library, :inverse_of => :cclasses
+  referenced_in :library, :inverse_of => :cclasses
   embeds_many :features
 
   field :name

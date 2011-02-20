@@ -136,6 +136,13 @@ describe Character do
       character.ac.should == 14
     end
 
+    it "should be able to add class feature effects to ac" do
+      character = Factory(:character, :base_dex => 10, :base_wis => 16)
+      cclass = Factory(:cclass, :features => [{ :name => 'monk', :level => 1, :effects => [{ ac: 'wis_bonus' }] }])
+      character.levels.build.tap { |level| level.cclass = cclass }
+      character.ac.should == 13
+    end
+
   end
 
   describe "saves" do

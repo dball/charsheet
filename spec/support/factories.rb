@@ -26,6 +26,7 @@ FactoryGirl.define do
   end
 
   factory :cclass do
+    library
     name 'rogue'
     bab 'three_quarters'
     fort 'bad'

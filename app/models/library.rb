@@ -2,5 +2,5 @@ class Library
   include Mongoid::Document
 
   embeds_many :races
-  embeds_many :cclasses
+  references_many :cclasses
 end
