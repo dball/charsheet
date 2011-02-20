@@ -59,8 +59,7 @@ describe Character do
     it "should derive hp from con and levels" do
       character = Factory(:character, :base_con => 12)
       cclass = Factory(:cclass)
-      [5, 7].each { |hp| character.levels.build(:hp => hp) }
-      character.levels.each { |level| level.cclass = cclass }
+      [5, 7].each { |hp| character.levels.gain(cclass, hp) }
       character.hp.should == 14
     end
 

@@ -14,5 +14,6 @@ class Effect
   end
   field :attack
   field :damage
+  field :hp
 
 end

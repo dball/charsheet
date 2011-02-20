@@ -6,7 +6,14 @@ class Character
 
   embeds_one :adjustment
 
-  embeds_many :levels
+  embeds_many :levels do
+    def gain(cclass, hp)
+      build(effect: { hp: hp }).tap do |level|
+        # FIXME - why in the world can't I do this in the hash?
+        level.cclass = cclass
+      end
+    end
+  end
   embeds_many :equipment
   embeds_many :buffs
 

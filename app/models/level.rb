@@ -3,24 +3,9 @@ class Level
 
   embedded_in :character, :inverse_of => :levels
   referenced_in :cclass
-
-  Ability::ABILITIES.each do |ability|
-    field ability, :type => Integer
-    validates_numericality_of ability,
-      :allow_nil => true, :only_integer => true
-  end
-
-  field :hp, :type => Integer
-  validates_presence_of :hp
-  validates_numericality_of :hp, :greater_than => 0
-
-  %w(fort reflex will).each do |save|
-    field save, :type => Integer, :default => 0
-    validates_presence_of save
-    validates_numericality_of save, :greater_than_or_equal_to => 0
-  end
-
-  field :ac
+  embeds_one :effect
+  
+  after_initialize :build_effect
 
   scope :cclass, lambda { |cclass| where(:cclass_id => cclass.id) }
 
@@ -36,7 +21,7 @@ class Level
     self[:cclass_id] = cclass.id
     clevel = cclass.clevel(cclass_level)
     %w(fort reflex will).each do |save|
-      self.send("#{save}=", clevel.send(save))
+      effect.send("#{save}=", clevel.send(save))
     end
   end
 
@@ -45,7 +30,7 @@ class Level
   end
 
   def effects
-    [self] + features.map(&:effects).flatten
+    [effect] + features.map(&:effects).flatten
   end
 
   def type
