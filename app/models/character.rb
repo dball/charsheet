@@ -108,4 +108,9 @@ class Character
     end
   end
 
+  def attacks
+    attacks = equipment.worn.weapons.map(&:name) + %w(unarmed)
+    attacks.map { |name| Attack.new.tap { |attack| attack.name = name } }
+  end
+
 end

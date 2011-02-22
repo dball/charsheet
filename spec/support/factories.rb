@@ -12,8 +12,14 @@ FactoryGirl.define do
 
   factory :equipment do
     character
-    name 'Belt of Giant Strength'
+    name 'belt of giant strength'
     slot 'belt'
+  end
+
+  factory :weapon do
+    character
+    name 'long sword'
+    slot 'grip'
   end
 
   factory :buff do
@@ -46,6 +52,11 @@ FactoryGirl.define do
   factory :feat do
     library
     name 'toughness'
+  end
+
+  factory :spell do
+    library
+    name "bull's strength"
   end
 
 end

@@ -240,4 +240,21 @@ describe Character do
 
   end
 
+  describe "attacks" do
+
+    before do
+      @character = Factory(:character)
+    end
+
+    it "should always have an unarmed attack" do
+      @character.attacks.map(&:name).should == %w(unarmed)
+    end
+
+    it "should have worn weapons as attacks" do
+      @character.equipment << Weapon.new(:worn => true, :name => 'sword')
+      @character.attacks.map(&:name).should == %w(sword unarmed)
+    end
+
+  end
+
 end
