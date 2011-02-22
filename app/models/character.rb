@@ -7,10 +7,13 @@ class Character
   embeds_one :adjustment
 
   embeds_many :levels do
-    def gain(cclass, hp)
+    def gain(cclass, hp, options = {})
       build(effect: { hp: hp }).tap do |level|
         # FIXME - why in the world can't I do this in the hash?
         level.cclass = cclass
+        if options[:feats]
+          level.feats += options[:feats]
+        end
       end
     end
   end
@@ -22,9 +25,9 @@ class Character
   validates_uniqueness_of :name
 
   def effects
-    effectors = levels + equipment.worn + buffs.active
+    effectors = [race] + levels + equipment.worn + buffs.active
     effectors.push(adjustment) if adjustment.present?
-    effectors.map { |effector| effector.effects }.flatten
+    effectors.map { |effector| effector.all_effects }.flatten
   end
 
   def effective_value(base, field)
@@ -44,7 +47,7 @@ class Character
   end
 
   Ability::ABILITIES.each do |ability|
-    field "base_#{ability}", :type => Integer
+    field "base_#{ability}", :type => Integer, :default => 10
     validates_numericality_of "base_#{ability}",
       :allow_nil => true, :only_integer => true
 

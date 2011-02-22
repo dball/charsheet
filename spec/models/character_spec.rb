@@ -15,7 +15,7 @@ describe Character do
   describe "abilities" do
   
     it "should have ability scores, modifiers, and bonuses" do
-      character = Character.new(:name => 'Gerhard')
+      character = Factory(:character)
       scores = [18, 17, 16, 9, 8, 0]
       modifiers = [4, 3, 3, -1, -1, -5]
       Ability::ABILITIES.zip(scores, modifiers).each do |ability, score, modifier|
@@ -48,7 +48,7 @@ describe Character do
     end
 
     it "should apply adjustment bonuses" do
-      character = Character.new(:base_str => 18, :adjustment => { :effects => [{ :str => 12 }] })
+      character = Factory(:character, :base_str => 18, :adjustment => { :effects => [{ :str => 12 }] })
       character.str.should == 30
     end
 
@@ -68,6 +68,21 @@ describe Character do
       character = Factory(:character, :base_con => 8)
       [1, 1, 1].each { |hp| character.levels.build(:hp => hp) }
       character.hp.should == 3
+    end
+
+    it "should derive hp from level feats" do
+      character = Factory(:character, :base_con => 10)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 2, :feats => [Factory(:feat, :effects => [{ hp: 3 }])])
+      character.hp.should == 5
+    end
+  
+    it "should derive hp from racial feats" do
+      character = Factory(:character, :base_con => 10)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 2)
+      character.race.feats += [Factory(:feat, :effects => [{ hp: 3 }])]
+      character.hp.should == 5
     end
   
   end

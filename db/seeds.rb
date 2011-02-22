@@ -31,3 +31,18 @@ library = Library.create
     will: 'bad'
   }
 ].each { |attributes| library.cclasses.create(attributes) }
+
+[
+  {
+    name: 'toughness',
+    effects: [{ hp: 3 }]
+  },
+  {
+    name: 'iron will',
+    effects: [{ will: 2 }]
+  }
+].each { |attributes| library.feats.create(attributes) }
+
+character = Character.new(race: library.races.first, name: 'Bob')
+character.levels.gain(library.cclasses.first, 12, feats: [library.feats.first, library.feats.last])
+character.save!

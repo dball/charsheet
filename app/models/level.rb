@@ -4,6 +4,7 @@ class Level
   embedded_in :character, :inverse_of => :levels
   referenced_in :cclass
   embeds_one :effect
+  embeds_many :feats
   
   after_initialize :build_effect
 
@@ -29,8 +30,8 @@ class Level
     cclass.features.select { |feature| feature.level == cclass_level }
   end
 
-  def effects
-    [effect] + features.map(&:effects).flatten
+  def all_effects
+    [effect] + (features + feats).map(&:effects).flatten
   end
 
   def type

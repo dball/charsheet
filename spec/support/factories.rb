@@ -42,4 +42,10 @@ FactoryGirl.define do
 
   factory :library do
   end
+
+  factory :feat do
+    library
+    name 'toughness'
+  end
+
 end

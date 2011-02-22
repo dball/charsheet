@@ -4,7 +4,7 @@ class Effect
   embedded_in :effector, :inverse_of => :effects
 
   field :type
-  field :operator, :default => '='
+  field :operator, :default => '+'
   Ability::ABILITIES.each do |ability|
     field ability
   end

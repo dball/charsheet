@@ -11,4 +11,6 @@ class Equipment
   scope :worn, where(:worn => true)
   scope :armor, where(:slot => 'armor')
 
+  alias :all_effects :effects
+
 end

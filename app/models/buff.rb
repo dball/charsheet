@@ -9,4 +9,7 @@ class Buff
 
   scope :active, where(:active => true)
 
+  alias :all_effects :effects
+
+
 end
