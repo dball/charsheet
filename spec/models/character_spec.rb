@@ -204,6 +204,13 @@ describe Character do
       character.speed.should == 70
     end
 
+    it "should assign new speed from effects like alter self" do
+      character = Factory(:character)
+      character.race.speed = 30
+      character.buffs.create(:effects => [{ :speed => 40, :operator => '=' }])
+      character.speed.should == 40
+    end
+
   end
   
   describe "skills" do
