@@ -34,9 +34,7 @@ class Character
     value = base
     relevant_effects = effects.select { |eff| eff.send(field).present? }
     relevant_effects.group_by(&:type).each do |type, effects|
-      values = effects.map { |eff| eff.send(field) }
-      # FIXME - hilariously unsafe use of instance_eval. And yet, so effective!
-      values.map! { |value| value.is_a?(Integer) ? value : instance_eval(value) }
+      values = effects.map { |effect| evaluate_effective_value(effect, field) }
       value += if type.present? && type != 'dodge'
         values.max
       else
@@ -44,6 +42,16 @@ class Character
       end
     end
     value
+  end
+
+  def evaluate_effective_value(effect, field)
+    value = effect.send(field)
+    case value
+      when Integer then value
+      else
+        # FIXME - hilariously unsafe use of instance_eval. And yet, so effective!
+        instance_eval(value)
+    end
   end
 
   Ability::ABILITIES.each do |ability|
