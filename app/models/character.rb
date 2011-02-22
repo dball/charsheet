@@ -33,6 +33,7 @@ class Character
   def effective_value(base, field)
     value = base
     relevant_effects = effects.select { |eff| eff.send(field).present? }
+    #assigns, adds = relevant_effects.partition { |eff| eff.operator == '=' }
     relevant_effects.group_by(&:type).each do |type, effects|
       values = effects.map { |effect| evaluate_effective_value(effect, field) }
       value += if type.present? && type != 'dodge'
