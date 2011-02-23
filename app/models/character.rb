@@ -19,11 +19,13 @@ class Character
   end
   embeds_many :equipment
   embeds_many :buffs
+  embeds_many :wounds
+  embeds_many :scars
 
   field :name
   validates_presence_of :name
   validates_uniqueness_of :name
-
+  
   def effects
     effectors = [race] + levels + equipment.worn + buffs.active
     effectors.push(adjustment) if adjustment.present?
@@ -113,6 +115,33 @@ class Character
 
   def hp
     effective_value(con_modifier * levels.length, :hp)
+  end
+  
+  def current_hp
+    damage = wounds.inject(0) { |sum, wound| sum + wound[:damage] }
+    hp - damage
+  end
+  
+  def wound(x, args = {})
+    w = self.wounds.create({damage: x})
+    w.damage_types = args[:types] if args[:types]
+    w.source = args[:source ] if args[:source]
+  end
+  
+  def heal(x)
+    return unless wounds.length > 0
+    targeted_wound = wounds.first
+    targeted_wound[:damage] -= x
+    if targeted_wound[:damage] <= 0
+      self.scars.create({
+        damage: targeted_wound[:initial_damage],
+        source: targeted_wound[:source],
+        damage_types: targeted_wound[:damage_types]
+      })
+      wounds.delete(targeted_wound)
+      remaining = targeted_wound[:damage].abs
+      self.heal(remaining) if remaining > 0
+    end
   end
 
   { :fort => :con, :reflex => :dex, :will => :wis }.each_pair do |save, ability|
