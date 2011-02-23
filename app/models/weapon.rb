@@ -1,6 +1,25 @@
 class Weapon < Equipment
 
-  field :light, :type => Boolean, :default => false
+  field :effort, :default => 'one-handed'
+  validates_inclusion_of :effort, in: %w(light one-handed two-handed)
+
+  field :size, :default => 'medium'
+  validates_presence_of :size
+
+  field :training, :default => 'simple'
+  validates_inclusion_of :training, in: %w(simple martial exotic)
+
+  field :kind, :default => 'melee'
+  validates_inclusion_of :kind, in: %w(melee thrown projectile)
+
+  field :reach
+
+  field :double, type: Boolean, default: false
+
+  field :range_increment, :type => Integer
+  validates_numericality_of :range_increment,
+    allow_nil: true, only_integer: true,
+    greater_than: 0
 
   field :critical_threshold, :type => Integer, :default => 20
   validates_numericality_of :critical_threshold,
