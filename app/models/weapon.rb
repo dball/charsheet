@@ -21,4 +21,17 @@ class Weapon < Equipment
     super + (masterwork? ? [Effect.new(bonus: 'enhancement', attack: 1)] : [])
   end
 
+  def self.parse(value)
+    params = {}
+    if value.sub!(/^masterwork /, '')
+      params[:masterwork] = true
+    elsif value.sub!(/^\+(\d+) /, '')
+      params[:masterwork] = true
+      bonus = Integer($1)
+      params[:effects] = [{ type: 'enhancement', attack: bonus, damage: bonus }]
+    end
+    params[:name] = value
+    new(params)
+  end
+
 end
