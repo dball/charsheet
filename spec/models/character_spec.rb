@@ -74,7 +74,8 @@ describe Character do
   describe "current_hp" do
     it "should change with damage and healing" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 12)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 12)
       character.current_hp.should == 12
       character.wound 4
       character.current_hp.should == 8
@@ -84,7 +85,8 @@ describe Character do
     
     it "should not heal above max hp" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 12)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 12)
       character.current_hp.should == 12
       character.heal 10
       character.current_hp.should == 12
@@ -94,7 +96,8 @@ describe Character do
   describe "wounds" do
     it "should be created on damage" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 8)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 8)
       character.wound 2
       character.wound 3
       character.wound 1
@@ -104,7 +107,8 @@ describe Character do
     
     it "should be removed with sufficient healing" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 8)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 8)
       character.wound 2
       character.wound 3
       character.wound 1
@@ -117,7 +121,8 @@ describe Character do
     
     it "should allow types of damage" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 8)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 8)
       character.wound 2, types: [:piercing, :slashing]
       character.wounds.last.damage_types.should == [:piercing, :slashing]
       character.wound 7, types: [:bludgeoning]
@@ -128,7 +133,8 @@ describe Character do
     
     it "should allow a source of damage" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 8)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 8)
       character.wound 5, types: [:bludgeoning], source: 'a big rock'
       character.wounds.last.source.should == 'a big rock'
       character.wound 2, source: 'Fizzwind the Wizard'
@@ -139,7 +145,8 @@ describe Character do
   describe "scars" do
     it "should be created when a wound is healed" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 12)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 12)
       character.wound 2
       character.heal 2
       character.scars.length.should == 1
@@ -150,7 +157,8 @@ describe Character do
     
     it "should store the attributes from the wound" do
       character = Factory(:character, :base_con => 10)
-      character.levels.build(:hp => 12)
+      cclass = Factory(:cclass)
+      character.levels.gain(cclass, 12)
       character.wound 2, types: [:piercing], source: 'bumblebee'
       character.heal 2
       character.scars.length.should == 1
