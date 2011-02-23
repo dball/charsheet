@@ -385,11 +385,23 @@ describe Character do
       @character.attacks.map(&:name).should == %w(sword unarmed)
     end
 
-    it "attacks should use bab + str as the base bonus" do
-      @character.base_str = 16
-      cclass = Factory(:cclass, :bab => '1')
-      2.times { @character.levels.gain(cclass, 1) }
-      @character.attacks.map(&:bonus).should == [5]
+    describe "bonuses" do
+
+      before do
+        @character.base_str = 16
+        cclass = Factory(:cclass, :bab => '1')
+        2.times { @character.levels.gain(cclass, 1) }
+      end
+
+      it "attacks should use bab + str as the base bonus" do
+        @character.attacks.map(&:bonus).should == [5]
+      end
+
+      it "attacks should add weapon effects to bonus" do
+        @character.equipment << Weapon.parse('+1 dagger')
+        @character.attacks.map(&:bonus).should == [6, 5]
+      end
+
     end
 
   end
