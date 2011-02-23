@@ -23,17 +23,12 @@ calculated values.
 * Have fast movement bonus either depend on the type of armor the character
   is wearing, or be manually activatable
 
-* Implement an assignment operator for effects, so that wildshape and polymorph
-  can reset base values for physical abilities
-
 * Calculate attack and damage bonuses for character's worn weapon
 
 * Allow character to define multiple attack scenarios
   Full attack, charge, normal attack for starters, but consider wielding a
   weapon 1- or 2-handed, using natural attacks instead of a weapon,
   switching weapons, etc.
-
-* Allow character to receive wounds and healing
 
 * DR
 
