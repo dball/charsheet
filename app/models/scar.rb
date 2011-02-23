@@ -1,0 +1,2 @@
+class Scar < Wound
+end
