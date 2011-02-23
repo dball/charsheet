@@ -152,7 +152,12 @@ class Character
 
   def attacks
     attacks = equipment.worn.weapons.map(&:name) + %w(unarmed)
-    attacks.map { |name| Attack.new.tap { |attack| attack.name = name } }
+    attacks.map do |name|
+      Attack.new.tap do |attack|
+        attack.name = name
+        attack.bonus = str_modifier + bab
+      end
+    end
   end
 
   def level

@@ -1,5 +1,5 @@
 class Attack
 
-  attr_accessor :name
+  attr_accessor :name, :bonus
 
 end
