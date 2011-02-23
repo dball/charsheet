@@ -367,6 +367,11 @@ describe Character do
       # http://www.wizards.com/default.asp?x=dnd/ex/20060403a&page=2
       pending "crazy bab corner case"
     end
+
+    it "should allow bonus from skillful weapons to change bab progression" do
+      # Complete Arcane; they set your BAB progression to 3/4
+      pending "crazy bab corner case"
+    end
  
   end
 
