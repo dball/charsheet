@@ -362,6 +362,11 @@ describe Character do
       @character.buffs.create(:effects => [{ :bab => 'level', :operator => '=' }])
       @character.bab.should == 3
     end
+
+    it "should allow bab bonus from soulbow and bab assignment from divine power to stack" do
+      # http://www.wizards.com/default.asp?x=dnd/ex/20060403a&page=2
+      pending "crazy bab corner case"
+    end
  
   end
 
