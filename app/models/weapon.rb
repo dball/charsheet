@@ -17,4 +17,8 @@ class Weapon < Equipment
     allow_nil: false, only_integer: true,
     greater_than_or_equal_to: 1, less_than_or_equal_to: 2
 
+  def all_effects
+    super + (masterwork? ? [Effect.new(bonus: 'enhancement', attack: 1)] : [])
+  end
+
 end
