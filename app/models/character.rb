@@ -10,6 +10,7 @@ class Character
   embeds_many :equipment
   embeds_many :buffs
   embeds_many :wounds
+  embeds_many :scars
 
   field :name
   validates_presence_of :name
@@ -107,11 +108,15 @@ class Character
     return unless wounds.length > 0
     targeted_wound = wounds.first
     targeted_wound[:damage] -= x
-    wounds.delete(targeted_wound) if targeted_wound[:damage] == 0
-    if targeted_wound[:damage] < 0
-      remaining = targeted_wound[:damage].abs
+    if targeted_wound[:damage] <= 0
+      self.scars.create({
+        damage: targeted_wound[:initial_damage],
+        source: targeted_wound[:source],
+        damage_types: targeted_wound[:damage_types]
+      })
       wounds.delete(targeted_wound)
-      self.heal(remaining)
+      remaining = targeted_wound[:damage].abs
+      self.heal(remaining) if remaining > 0
     end
   end
 

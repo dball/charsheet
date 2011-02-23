@@ -135,6 +135,30 @@ describe Character do
       character.wounds.last.source.should == 'Fizzwind the Wizard'
     end
   end
+  
+  describe "scars" do
+    it "should be created when a wound is healed" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 12)
+      character.wound 2
+      character.heal 2
+      character.scars.length.should == 1
+      character.wound 3
+      character.heal 4
+      character.scars.length.should == 2
+    end
+    
+    it "should store the attributes from the wound" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 12)
+      character.wound 2, types: [:piercing], source: 'bumblebee'
+      character.heal 2
+      character.scars.length.should == 1
+      character.scars.last.source.should == 'bumblebee'
+      character.scars.last.damage_types.should == [:piercing]
+      character.scars.last.damage.should == 2
+    end
+  end
 
   describe "levels" do
 
