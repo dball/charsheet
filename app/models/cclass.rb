@@ -15,7 +15,7 @@ class Cclass
 
   field :bab
   validates_presence_of :bab
-  validates_inclusion_of :bab, :in => %w(full three_quarters half)
+  validates_inclusion_of :bab, :in => %w(1 3/4 1/2)
 
   [:fort, :reflex, :will].each do |save|
     field save
@@ -32,9 +32,9 @@ class Cclass
       end
     end
     args.push(case bab
-      when 'full' then 1
-      when 'three_quarters' then (clevel - 1) % 4 == 0 ? 0 : 1
-      when 'one_half' then (clevel % 2) == 1 ? 0 : 1
+      when '1' then 1
+      when '3/4' then (clevel - 1) % 4 == 0 ? 0 : 1
+      when '1/2' then (clevel % 2) == 1 ? 0 : 1
     end)
     Clevel.new(*args)
   end

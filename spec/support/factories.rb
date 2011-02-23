@@ -34,7 +34,7 @@ FactoryGirl.define do
   factory :cclass do
     library
     name 'rogue'
-    bab 'three_quarters'
+    bab '3/4'
     fort 'bad'
     reflex 'good'
     will 'bad'

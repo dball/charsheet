@@ -125,4 +125,12 @@ class Character
     attacks.map { |name| Attack.new.tap { |attack| attack.name = name } }
   end
 
+  def level
+    levels.length
+  end
+
+  def bab
+    effective_value(0, :bab)
+  end
+
 end

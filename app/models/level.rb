@@ -21,8 +21,8 @@ class Level
   def cclass=(cclass)
     self[:cclass_id] = cclass.id
     clevel = cclass.clevel(cclass_level)
-    %w(fort reflex will).each do |save|
-      effect.send("#{save}=", clevel.send(save))
+    %w(fort reflex will bab).each do |field|
+      effect.send("#{field}=", clevel.send(field))
     end
   end
 

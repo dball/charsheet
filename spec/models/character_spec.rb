@@ -90,16 +90,18 @@ describe Character do
   describe "levels" do
 
     before do
-      %w(fighter rogue).each do |name|
+      @cclasses = %w(fighter rogue).map do |name|
         Factory(:cclass, :name => name)
       end
     end
 
     it "should have class levels" do
       character = Factory(:character)
-      %w(fighter fighter rogue).each do |name|
-        character.levels.build(:cclass_name => name)
+      @cclasses.each do |cclass|
+        character.levels.gain(cclass, 1)
       end
+      character.levels.map(&:cclass).should == @cclasses
+      character.level.should == 2
     end
 
   end
@@ -245,6 +247,26 @@ describe Character do
       character.diplomacy_modifiers.conditions.should == {}
     end
 
+  end
+
+  describe "bab" do
+  
+    before do
+      @character = Factory(:character)
+      cclass = Factory(:cclass, :bab => '1/2')
+      3.times { @character.levels.gain(cclass, 1) }
+    end
+
+    it "should have a bab of 1" do
+      @character.bab.should == 1
+    end
+
+    it "should allow bab to be reset by effects" do
+      pending "figuring out how"
+      @character.buffs.create(:effects => [{ :bab => 'level', :operator => '=' }])
+      @character.bab.should == 3
+    end
+ 
   end
 
   describe "attacks" do

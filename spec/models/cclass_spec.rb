@@ -25,21 +25,21 @@ describe 'Cclass' do
   describe "bab" do
     
     it "should have full bab" do
-      @cclass.bab = 'full'
+      @cclass.bab = '1'
       ([1] * 20).each_with_index do |bab, i|
         @cclass.clevel(i + 1).bab.should == bab
       end
     end
 
     it "should have 3/4 bab" do
-      @cclass.bab = 'three_quarters'
+      @cclass.bab = '3/4'
       ([0, 1, 1, 1] * 5).each_with_index do |bab, i|
         @cclass.clevel(i + 1).bab.should == bab
       end
     end
 
     it "should have 1/2 bab" do
-      @cclass.bab = 'one_half'
+      @cclass.bab = '1/2'
       ([0, 1] * 10).each_with_index do |bab, i|
         @cclass.clevel(i + 1).bab.should == bab
       end

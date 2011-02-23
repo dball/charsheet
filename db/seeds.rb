@@ -10,14 +10,14 @@ library = Library.create
 [
   {
     name: 'barbarian',
-    bab: 'full',
+    bab: '1',
     fort: 'good',
     reflex: 'bad',
     will: 'bad'
   },
   {
     name: 'paladin',
-    bab: 'full',
+    bab: '1',
     fort: 'good',
     reflex: 'bad',
     will: 'bad',
@@ -25,7 +25,7 @@ library = Library.create
   },
   {
     name: 'rogue',
-    bab: 'three_quarters',
+    bab: '3/4',
     fort: 'bad',
     reflex: 'good',
     will: 'bad'
