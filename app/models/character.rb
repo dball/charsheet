@@ -36,6 +36,7 @@ class Character
     assigns, adds = relevant.partition { |effect| effect.operator == '=' }
     unless assigns.empty?
       value = assigns.map { |effect| evaluate_effective_value(effect, field) }.max
+      return value if field == :bab
     end
     adds.group_by(&:type).each do |type, effects|
       values = effects.map { |effect| evaluate_effective_value(effect, field) }

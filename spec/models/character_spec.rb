@@ -262,7 +262,6 @@ describe Character do
     end
 
     it "should allow bab to be reset by effects" do
-      pending "figuring out how"
       @character.buffs.create(:effects => [{ :bab => 'level', :operator => '=' }])
       @character.bab.should == 3
     end
