@@ -97,8 +97,10 @@ class Character
     hp - damage
   end
   
-  def wound(x)
-    self.wounds.create({damage: x})
+  def wound(x, args = {})
+    w = self.wounds.create({damage: x})
+    w.damage_types = args[:types] if args[:types]
+    w.source = args[:source ] if args[:source]
   end
   
   def heal(x)

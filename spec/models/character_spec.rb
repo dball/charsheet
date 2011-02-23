@@ -114,6 +114,26 @@ describe Character do
       character.heal 7
       character.wounds.length.should == 0
     end
+    
+    it "should allow types of damage" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 8)
+      character.wound 2, types: [:piercing, :slashing]
+      character.wounds.last.damage_types.should == [:piercing, :slashing]
+      character.wound 7, types: [:bludgeoning]
+      character.wounds.last.damage_types.should == [:bludgeoning]
+      character.wound 5
+      character.wounds.last.damage_types.should == nil
+    end
+    
+    it "should allow a source of damage" do
+      character = Factory(:character, :base_con => 10)
+      character.levels.build(:hp => 8)
+      character.wound 5, types: [:bludgeoning], source: 'a big rock'
+      character.wounds.last.source.should == 'a big rock'
+      character.wound 2, source: 'Fizzwind the Wizard'
+      character.wounds.last.source.should == 'Fizzwind the Wizard'
+    end
   end
 
   describe "levels" do
